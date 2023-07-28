@@ -1,4 +1,3 @@
-
 #!/bin/sh
 # Compiles with -g and runs valgrind, outputs to valgrind.log
 
