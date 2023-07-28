@@ -1,6 +1,6 @@
-# Compiles with -g and runs valgrind, outputs to valgrind.log
 
 #!/bin/sh
+# Compiles with -g and runs valgrind, outputs to valgrind.log
 
-# ./build -g && \
+./build -g && \
 valgrind --leak-check=full --show-leak-kinds=definite,indirect,possible --track-origins=yes --log-file=valgrind.log ./wi $@

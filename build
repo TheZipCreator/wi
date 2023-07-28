@@ -1,5 +1,4 @@
-# Builds the tungstyn interpreter. Takes any compiler arguments
-
 #!/bin/sh
+# Builds the tungstyn interpreter. Takes any compiler arguments
 
 gcc src/*.c -lreadline -lm -o wi $@
