@@ -10,29 +10,37 @@ Modulo operator.
 Short-circuit logical and operator
 ### Examples
 `& 1 1 1` => `1`
+
 `& 1 0` => `0`
+
 `& 1 null` => `null`
 ## `*`
 Multiplication operator.
 ### Examples
 `* 10 3` => `30`
+
 `* 5 4 2` => `40`
 ## `+`
 Addition operator.
 ### Examples
 `+ 2 4` => `6`
+
 `+ 5 5 5` => `15`
 ## `-`
 Subtraction operator.
 ### Examples
 `- 4 2` => `2`
+
 `- 5 2 1` => `2`
+
 `- 2 10` => `-8`
 ## `/`
 Division operator. Does integer division if both arguments are integers, float division otherwise.
 ### Examples
 `/ 10 5` => `2`
+
 `/ 2 3` => `0`
+
 `/ 2 3.0` => `0.66666`
 ## `<`
 Returns `1` if the left number is less than the right number.
@@ -42,9 +50,13 @@ Returns `1` if the left number is less than or equal to the right number.
 Returns `1` if the left value is equal to the right value. Lists are compared by each of their elements, while all other values are compared directly by their values.
 ### Examples
 `= 1 2` => `0`
+
 `= 1 1` => `1`
+
 `= [list 1 2 3] [list 1 2 3]` => `1`
+
 `= [list 1] [list 2]` => `0`
+
 `= [map a 2] [map a 2]` => `0`
 ## `>`
 Returns `1` if the left number is greater than the right number.
@@ -54,10 +66,15 @@ Returns `1` if the left number is greater than or equal to the right number.
 Short-circuit logical or operator
 ### Examples
 `| 1 1 1` => `1`
+
 `| 1 0` => `1`
+
 `| 0 0 0` => `0`
+
 `| 1 null` => `1`
+
 `| null abcd` => `abcd`
+
 `| a b` => `a`
 ## `break`
 Exits a loop prematurely
@@ -110,7 +127,9 @@ prints
 Evaluates its operand.
 ### Examples
 `do 3` => `3`
+
 `do [+ 2 3]` => `5`
+
 `do [let! $i 5; * $i 40]` => `200`
 ## `echo`
 Echoes all of its arguments to stdout, and returns `null`.

@@ -1,7 +1,7 @@
 # Map Commands
 These are command accesible by indexing a map. Note that commands not ending with `!` copy the map and modify and return that.
-## set!
-## set
+## `set!`
+## `set`
 Sets a value in a map.
 ### Examples
 ```
