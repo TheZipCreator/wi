@@ -6,7 +6,7 @@ Sets a given index in a string. Value can either be an integer (in which case it
 ### Examples
 `abcd:set 2 k` => `abkd`
 
-`1111:set 0 48` => `0111`
+`"1111":set 0 48` => `0111`
 ## `slice!`
 ## `slice`
 Slices a string given two indices
