@@ -358,7 +358,7 @@ static w_ast_t parse(bool top_level, parser_t *p) {
 				add(p, &cmds);
 				p->start = p->pos+1;
 				// add placeholder ast
-				ADD_AST(&cmds, ((w_ast_t){.type = W_AST_INDEX, .index = (w_ast_index_t){.left = NULL, .right = NULL}}));
+				ADD_AST(&cmds, ((w_ast_t){.pos = get_pos(p), .type = W_AST_INDEX, .index = (w_ast_index_t){.left = NULL, .right = NULL}}));
 				break;
 			// string
 			case '"': {
