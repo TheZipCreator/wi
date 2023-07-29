@@ -351,3 +351,10 @@ while [< $i 10] [
     set! $i [+ $i 1];
 ];
 ```
+## `write`
+Writes a string to a file
+### Examples
+```
+# writes hello world to hello.txt
+write hello.txt "Hello, World!\n"
+```

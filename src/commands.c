@@ -36,6 +36,19 @@
 		return (w_value_t){}; \
 	}
 
+#define GET_STRING(RET, IDX) \
+	{ \
+		w_value_t _v = w_evalt(ctx, this, &args.ptr[IDX]); \
+		if(ctx->status->tag != W_STATUS_OK) \
+			return (w_value_t){}; \
+		if(_v.type == W_VALUE_STRING) \
+			RET = _v; \
+		else { \
+			RET = w_value_tostring(&_v); \
+			w_value_release(&_v); \
+		} \
+	}
+
 // IO
 
 W_COMMAND(w_cmd_echo) {
@@ -88,6 +101,28 @@ W_COMMAND(w_cmd_read) {
 	if(args.len == 1)
 		fclose(fp);
 	return (w_value_t){.type = W_VALUE_STRING, .string = str};
+}
+
+W_COMMAND(w_cmd_write) {
+	ARGS_EQUAL("write", 2);
+	w_value_t vname, vtext;
+	GET_STRING(vname, 0);
+	GET_STRING(vtext, 1);
+	char *name = w_cstring(vname.string);
+	w_value_release(&vname);
+	FILE *fp = fopen(name, "w");
+	if(fp == NULL) {
+		w_status_err(ctx->status, w_error_new(pos, "Could not open file '%s'.", name));
+		w_value_release(&vtext);
+		free(name);
+		return (w_value_t){};
+	}
+	free(name);
+	w_string_t *s = vtext.string;
+	for(size_t i = 0; i < s->len; i++)
+		fputc(s->ptr[i], fp);
+	w_value_release(&vtext);
+	return (w_value_t){.type = W_VALUE_NULL};
 }
 
 W_COMMAND(w_cmd_readln) {

@@ -8,8 +8,10 @@
 W_COMMAND(w_cmd_echo); // echoes all given values
 W_COMMAND(w_cmd_echoln); // same as above, but echoes a newline (U+000A) after
 
-W_COMMAND(w_cmd_read); // reads all of stdin
+W_COMMAND(w_cmd_read); // reads stdin or a file
 W_COMMAND(w_cmd_readln); // echoes a prompt, and reads a single line
+
+W_COMMAND(w_cmd_write); // writes to a file
 
 // arithmetic operations
 

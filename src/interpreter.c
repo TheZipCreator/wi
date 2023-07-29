@@ -671,6 +671,7 @@ w_ctx_t w_default_ctx(w_status_t *status) {
 	w_ctx_letc(&ctx, "echoln", CMD(echoln));
 	w_ctx_letc(&ctx, "read", CMD(read));
 	w_ctx_letc(&ctx, "readln", CMD(readln));
+	w_ctx_letc(&ctx, "write", CMD(write));
 	
 	w_ctx_letc(&ctx, "+", CMD(add));
 	w_ctx_letc(&ctx, "-", CMD(sub));
