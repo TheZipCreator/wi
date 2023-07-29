@@ -6,4 +6,4 @@
 - Fixed the `let!` command calling itself `set!` sometimes.
 - Added `string:dup`, `string:reverse`, `string:cat`, `list:dup`, and `list:reverse`
 - Allowed `read` to take an argument, which is a file to read.
-- Added `write
+- Added `write`
