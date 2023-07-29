@@ -4,4 +4,5 @@
 ## (dev)
 - Fixed `(null):1:1` file position appearing in certain circumstances.
 - Fixed the `let!` command calling itself `set!` sometimes.
-
+- Added `string:dup`, `string:reverse`, `list:dup`, and `list:reverse`
+- Allowed `read` to take an argument, which is a file to read.

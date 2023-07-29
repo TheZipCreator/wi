@@ -1,5 +1,24 @@
 # String Commands
 These are command accesible by indexing a string. Note that commands not ending with `!` copy the string and modify and return that.
+## `dup!`
+## `dup`
+Duplicates a string N times
+### Examples
+```
+set! $s hello;
+echo
+    [$s:dup 3] # hellohellohello
+    [$s:dup 5] # hellohellohellohellohello
+    [$s:dup 1] # hello
+    [$s:dup 0] # ""
+```
+## `reverse!`
+## `reverse`
+Reverses a string.
+### Examples
+`abcd:reverse` => `dcba`
+
+`hello:reverse` => `olleh`
 ## `set!`
 ## `set`
 Sets a given index in a string. Value can either be an integer (in which case it's converted to a byte) or a 1-length string.
@@ -15,18 +34,6 @@ Slices a string given two indices
 let! $s abcdefg;
 $s:slice! 0 4;
 echoln $s; # abcde
-```
-## `dup!`
-## `dup`
-Duplicates a string N times
-### Examples
-```
-set! $s hello;
-echo
-    [$s:dup 3] # hellohellohello
-    [$s:dup 5] # hellohellohellohellohello
-    [$s:dup 1] # hello
-    [$s:dup 0] # ""
 ```
 ## `split`
 Splits a string by a given delimiter.

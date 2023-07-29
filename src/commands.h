@@ -79,6 +79,10 @@ W_COMMAND(w_cmd_list_cat_mut); // concats lists
 W_COMMAND(w_cmd_list_cat);
 W_COMMAND(w_cmd_list_fill_mut); // fills a list
 W_COMMAND(w_cmd_list_fill);
+W_COMMAND(w_cmd_list_dup_mut); // duplicates a list
+W_COMMAND(w_cmd_list_dup);
+W_COMMAND(w_cmd_list_reverse_mut); // reverses a list
+W_COMMAND(w_cmd_list_reverse);
 
 W_COMMAND(w_cmd_new_list); // makes a list with N entries
 
@@ -96,6 +100,9 @@ W_COMMAND(w_cmd_string_slice_mut);
 W_COMMAND(w_cmd_string_slice);
 W_COMMAND(w_cmd_string_dup_mut);
 W_COMMAND(w_cmd_string_dup);
+W_COMMAND(w_cmd_string_split);
+W_COMMAND(w_cmd_string_reverse_mut);
+W_COMMAND(w_cmd_string_reverse);
 W_COMMAND(w_cmd_string_split);
 
 W_COMMAND(w_cmd_clone); // clones a list or a map

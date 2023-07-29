@@ -60,14 +60,33 @@ W_COMMAND(w_cmd_echoln) {
 }
 
 W_COMMAND(w_cmd_read) {
-	ARGS_NONE("read");
+	ARGS_BETWEEN("read", 0, 1);
 	w_writer_t w = w_writer_new();
+	FILE *fp = stdin;
+	if(args.len == 1) {
+		w_value_t v_ = w_evalt(ctx, this, &args.ptr[0]);
+		w_value_t v = w_value_tostring(&v_);
+		w_value_release(&v_);
+		if(ctx->status->tag != W_STATUS_OK)
+			return (w_value_t){};
+		char *str = w_cstring(v.string);
+		fp = fopen(str, "r");
+		if(fp == NULL) {
+			w_status_err(ctx->status, w_error_new(pos, "Could not open file '%s'.", str));
+			free(str);
+			return (w_value_t){};
+		}
+		w_value_release(&v);
+		free(str);
+	}
 	char c;
-	while((c = fgetc(stdin)) != EOF)
+	while((c = fgetc(fp)) != EOF)
 		w_writer_putch(&w, c);
 	w_writer_resize(&w);
 	w_string_t *str = malloc(sizeof(w_string_t));
 	*str = (w_string_t){1, w.len, w.buf};
+	if(args.len == 1)
+		fclose(fp);
 	return (w_value_t){.type = W_VALUE_STRING, .string = str};
 }
 
@@ -823,6 +842,52 @@ W_COMMAND(w_cmd_list_fill_mut) {
 
 UNMUT(w_cmd_list_fill, w_cmd_list_fill_mut, map->data);
 
+W_COMMAND(w_cmd_list_dup_mut) {
+	ARGS_EQUAL("list:dup", 1);
+	int64_t amt;
+	GET_INT(amt, 0);
+	if(amt < 0) {
+		w_status_err(ctx->status, w_error_new(pos, "Amount of duplications must be positive."));
+		return (w_value_t){};
+	}
+	w_list_t *l = obj->list;
+	if(amt == 0) {
+		l->len = 0;
+		free(l->ptr);
+		l->ptr = NULL;
+		goto ret;
+	}
+	if(amt == 1)
+		goto ret;
+	size_t len = l->len, newlen = len*amt;
+	l->ptr = realloc(l->ptr, newlen*sizeof(w_value_t));
+	for(size_t i = len; i < newlen; i += len) {
+		memcpy(&l->ptr[i], l->ptr, len*sizeof(w_value_t));
+		for(size_t i = 0; i < len; i++)
+			w_value_ref(&l->ptr[i]);
+	}
+	l->len *= amt;
+	ret:
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_list_dup, w_cmd_list_dup_mut, list->refcount);
+
+W_COMMAND(w_cmd_list_reverse_mut) {
+	ARGS_EQUAL("list:reverse", 0);
+	w_list_t *l = obj->list;
+	for(size_t i = 0; i < l->len/2; i++) {
+		w_value_t tmp = l->ptr[i];
+		l->ptr[i] = l->ptr[l->len-i-1];
+		l->ptr[l->len-i-1] = tmp;
+	}
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_list_reverse, w_cmd_list_reverse_mut, list->refcount);
+
 W_COMMAND(w_cmd_map_set_mut) {
 	ARGS_EQUAL("map:set", 2);
 	w_map_t *map = obj->map;
@@ -987,6 +1052,20 @@ W_COMMAND(w_cmd_string_dup_mut) {
 }
 
 UNMUT(w_cmd_string_dup, w_cmd_string_dup_mut, string->refcount);
+
+W_COMMAND(w_cmd_string_reverse_mut) {
+	ARGS_EQUAL("string:reverse", 0);
+	w_string_t *str = obj->string;
+	for(size_t i = 0; i < str->len/2; i++) {
+		char tmp = str->ptr[i];
+		str->ptr[i] = str->ptr[str->len-i-1];
+		str->ptr[str->len-i-1] = tmp;
+	}
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_string_reverse, w_cmd_string_reverse_mut, string->refcount);
 
 W_COMMAND(w_cmd_string_split) {
 	ARGS_EQUAL("string:split", 1);

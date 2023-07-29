@@ -277,11 +277,17 @@ for $i [range $l:len] [
 ];
 ```
 ## `read`
-Reads all of stdin.
+With no arguments, this reads all of stdin. If a string argument is given, it interprets it as a filepath and reads all of that file.
 ### Examples
 ```
 # Takes a number from stdin, doubles it, and echoes it
 echo [* [int [read]] 2]
+```
+```
+# Adds line numbers to a file named "input.txt", and outputs it
+for $i $s [[read input.txt]:split "\n"] [
+    echoln [+ $i 1] "\t" $s
+]
 ```
 ## `readln`
 Reads a line from stdin, optionally taking a prompt.
