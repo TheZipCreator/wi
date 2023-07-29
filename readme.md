@@ -3,7 +3,9 @@ This is the repository for `wi`, the interpreter for the Tungstyn language. The 
 Documentation on the language (in markdown format) is available under the docs/ directory.
 ## A note on naming
 The chemical symbol for tungsten (the element that is the language's namesake) is `W`. This is reflected in the file extension used for tungstyn (`.w`) and the name of this interpreter (`wi`, Tungstyn `w` Interpreter `i`).
+## Syntax highlighting
+For `vim` users there exists a syntax file `tungstyn.vim`.
 ## Building
 In order to build `wi`, install all dependencies and run the `build` script. You can also specify any arguments you wish to pass to `gcc` in that script (ex. `./build -O3`).
 ### Dependencies
-Currently, Tungstyn's only dependency is `libreadline`.
+Currently, Tungstyn's only dependency is `libreadline`, which is optional (remove `-DHAS_READLINE` from the build options if you don't want it)
