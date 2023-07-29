@@ -1067,6 +1067,28 @@ W_COMMAND(w_cmd_string_reverse_mut) {
 
 UNMUT(w_cmd_string_reverse, w_cmd_string_reverse_mut, string->refcount);
 
+W_COMMAND(w_cmd_string_cat_mut) {
+	ARGS_GTE("string:cat", 1);
+	w_string_t *str = obj->string;
+	for(size_t i = 0; i < args.len; i++) {
+		w_value_t v = w_evalt(ctx, this, &args.ptr[i]);
+		if(v.type != W_VALUE_STRING) {
+			w_value_t vs = w_value_tostring(&v);
+			w_value_release(&v);
+			v = vs;
+		}
+		w_string_t *s = v.string;
+		str->ptr = realloc(str->ptr, str->len+s->len);
+		memcpy(str->ptr+str->len, s->ptr, s->len);
+		str->len += s->len;
+		w_value_release(&v);
+	}
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_string_cat, w_cmd_string_cat_mut, string->refcount);
+
 W_COMMAND(w_cmd_string_split) {
 	ARGS_EQUAL("string:split", 1);
 	w_value_t vby = w_evalt(ctx, this, &args.ptr[0]);

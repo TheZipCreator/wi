@@ -492,6 +492,10 @@ w_value_t w_value_index(w_ctx_t *ctx, w_value_t *left, w_value_t *right) {
 						CMD(string_reverse_mut);
 					if(w_streqc(str, "reverse"))
 						CMD(string_reverse);
+					if(w_streqc(str, "cat!"))
+						CMD(string_cat_mut);
+					if(w_streqc(str, "cat"))
+						CMD(string_cat);
 					char *cstr = w_cstring(str);
 					w_status_err(ctx->status, w_error_new((w_filepos_t){}, "No member '%s' in string.", cstr));
 					free(cstr);

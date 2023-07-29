@@ -1,5 +1,12 @@
 # String Commands
 These are command accesible by indexing a string. Note that commands not ending with `!` copy the string and modify and return that.
+## `cat!`
+## `cat`
+Concatenates strings.
+### Examples
+`a:cat b` => `ab`
+
+`aaa:cat bbb ccc ddd` => `aaabbbcccddd`
 ## `dup!`
 ## `dup`
 Duplicates a string N times
