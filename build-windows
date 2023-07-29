@@ -1,0 +1,4 @@
+#!/bin/sh
+# Builds the tungstyn interpreter for Windows on Linux. Windows users should just use ./build
+# Takes any compiler arguments
+x86_64-w64-mingw32-gcc src/*.c -lm -o wi $@

@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+#ifdef HAS_READLINE
+	#include <readline/readline.h>
+	#include <readline/history.h>
+#endif
 
 #include "commands.h"
+#include "info.h"
 
 // arg checking macros
 
@@ -74,12 +77,18 @@ W_COMMAND(w_cmd_readln) {
 	if(ctx->status->tag != W_STATUS_OK)
 		return (w_value_t){};
 	// then readline
-	char *line = readline("");
+	#ifdef HAS_READLINE
+		char *line = readline("");
+	#else
+		char *line = w_readline("");
+	#endif
 	if(line == NULL) {
 		w_status_err(ctx->status, w_error_new(pos, "EOF"));
 		return (w_value_t){};
 	}
-	add_history(line);
+	#ifdef HAS_READLINE
+		add_history(line);
+	#endif
 	w_string_t *str = malloc(sizeof(w_string_t));
 	*str = (w_string_t){1, strlen(line), line};
 	return (w_value_t){.type = W_VALUE_STRING, .string = str};
@@ -343,7 +352,7 @@ W_COMMAND(w_cmd_while) {
 				w_value_release(&vbody);
 				return (w_value_t){};
 		}
-		cont:
+		cont:;
 	}
 	done:
 	return vbody;

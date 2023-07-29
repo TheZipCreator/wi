@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#ifdef HAS_READLINE
+	#include <readline/readline.h>
+	#include <readline/history.h>
+#endif
 
-#include "info.h"
 #include "parser.h"
 #include "interpreter.h"
+#include "info.h"
 #include "main.h"
 
 int main(int argc, char **argv) {
@@ -97,10 +99,16 @@ void repl(void) {
 	w_ctx_t sub_ctx = w_ctx_clone(&ctx);
 	while(true) {
 		w_status_ok(&status);
-		char *line = readline("> ");
+		#ifdef HAS_READLINE
+			char *line = readline("> ");
+		#else
+			char *line = w_readline("> ");
+		#endif
 		if(line == NULL)
 			break;
-		add_history(line);
+		#ifdef HAS_READLINE
+			add_history(line);
+		#endif
 		if(line[0] == ':') {
 			if(strcmp(line, ":q") == 0) {
 				free(line);
@@ -136,6 +144,8 @@ void repl(void) {
 	}
 	w_ctx_free(&ctx);
 	w_ctx_free(&sub_ctx);
-	rl_clear_history();
+	#ifdef HAS_READLINE
+		clear_history();
+	#endif
 }
 

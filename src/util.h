@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /// Represents a position in a file
 typedef struct w_filepos {
@@ -79,5 +80,7 @@ bool w_is_int(char *str, size_t len); /// Checks whether a string is an int
 bool w_is_float(char *str, size_t len); /// Checks whether a value is a float
 int64_t w_parse_int(char *str, size_t len); /// Converts a string to an int
 double w_parse_float(char *str, size_t len); /// Converts a string to a float
+
+char *w_readline(char *prompt); /// Gets a line from stdin. Used in place of readline() on Windows (since I couldn't get libreadline to work there)
 
 #endif

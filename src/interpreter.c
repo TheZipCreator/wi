@@ -4,8 +4,6 @@
 #include <inttypes.h>
 #include <math.h>
 
-#include <execinfo.h>
-
 #include "commands.h"
 #include "interpreter.h"
 

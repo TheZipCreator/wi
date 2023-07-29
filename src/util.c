@@ -72,7 +72,7 @@ void w_status_return(w_status_t *s, w_value_t *val) {
 	s->ret = pv;
 }
 
-#ifdef __GLIBC__
+#if __GLIBC__
 void w_print_backtrace(void) {
 	void *buf[4096];
 	int size = backtrace(buf, 4096);
@@ -178,4 +178,23 @@ double w_parse_float(char *str, size_t len) {
 	if(minus)
 		ret = -ret;
 	return ret;
+}
+
+char *w_readline(char *prompt) {
+	printf(prompt);
+	w_writer_t w = w_writer_new();
+	int c;
+	while(true) {
+		c = getchar();
+		if(c == '\n')
+			break;
+		if(c == EOF) {
+			free(w.buf);
+			return NULL;
+		}
+		w_writer_putch(&w, c);
+	}
+	w_writer_putch(&w, '\0');
+	w_writer_resize(&w);
+	return w.buf;
 }

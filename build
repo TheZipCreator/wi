@@ -1,4 +1,10 @@
 #!/bin/sh
 # Builds the tungstyn interpreter. Takes any compiler arguments
 
-gcc src/*.c -lreadline -lm -o wi $@
+flags="-lm"
+
+if [ "$OSTYPE" != "msys" ]; then
+	flags="$flags -lreadline -DHAS_READLINE"
+fi
+
+gcc src/*.c $flags -o wi $@
