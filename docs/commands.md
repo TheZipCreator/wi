@@ -81,7 +81,7 @@ Exits a loop prematurely
 ### Examples
 ```
 for $i [range 50] [
-	echo $i
+	echo $i;
 	if [= $i 10] [break]
 ]
 ```
