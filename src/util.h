@@ -82,5 +82,6 @@ int64_t w_parse_int(char *str, size_t len); /// Converts a string to an int
 double w_parse_float(char *str, size_t len); /// Converts a string to a float
 
 char *w_readline(char *prompt); /// Gets a line from stdin. Used in place of readline() on Windows (since I couldn't get libreadline to work there)
+char *w_lib_path(void); /// Returns the path for libraries. Returned string is owned by the caller.
 
 #endif

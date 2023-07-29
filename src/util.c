@@ -6,6 +6,13 @@
 #ifdef __GLIBC__
 #include <execinfo.h>
 #endif
+#ifdef _WIN32
+#include <libloaderapi.h>
+#include <fileapi.h>
+#else
+#include <unistd.h>
+#include <sys/stat.h>
+#endif
 
 #include "util.h"
 
@@ -197,4 +204,38 @@ char *w_readline(char *prompt) {
 	w_writer_putch(&w, '\0');
 	w_writer_resize(&w);
 	return w.buf;
+}
+
+char *w_lib_path(void) {
+	#define BUF_SIZE 4096
+	char *buf = malloc(BUF_SIZE);
+	// get executable directory
+	#ifdef __linux__
+		readlink("/proc/self/exe", buf, BUF_SIZE);
+	#elif defined(__FreeBSD__)
+		readlink("/proc/curproc/file", buf, BUF_SIZE);
+	#elif defined(_WIN32)
+		GetModuleFileNameA(NULL, buf, BUF_SIZE);
+	#else
+		#error "Unsupported operating system."
+	#endif
+	// replace filename with '/lib'
+	for(size_t i = strlen(buf); i > 0; i--) {
+		if(buf[i] == '/' || buf[i] == '\\') {
+			strncpy(buf+i+1, "lib", BUF_SIZE-i-1);
+			break;
+		}
+	}
+	// create directory if it doesn't exist
+	#ifdef _WIN32
+		DWORD attrib = GetFileAttributes(buf);
+		if(attrib == INVALID_FILE_ATTRIBUTES)
+			CreateDirectoryA(buf, 0);
+	#else
+		struct stat st;
+		if(stat(buf, &st) != 0)
+			mkdir(buf, 0755);
+	#endif
+	return buf;
+	#undef BUF_SIZE
 }
