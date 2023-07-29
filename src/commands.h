@@ -94,6 +94,8 @@ W_COMMAND(w_cmd_string_set_mut);
 W_COMMAND(w_cmd_string_set);
 W_COMMAND(w_cmd_string_slice_mut);
 W_COMMAND(w_cmd_string_slice);
+W_COMMAND(w_cmd_string_dup_mut);
+W_COMMAND(w_cmd_string_dup);
 W_COMMAND(w_cmd_string_split);
 
 W_COMMAND(w_cmd_clone); // clones a list or a map

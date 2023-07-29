@@ -16,6 +16,18 @@ let! $s abcdefg;
 $s:slice! 0 4;
 echoln $s; # abcde
 ```
+## `dup!`
+## `dup`
+Duplicates a string N times
+### Examples
+```
+set! $s hello;
+echo
+    [$s:dup 3] # hellohellohello
+    [$s:dup 5] # hellohellohellohellohello
+    [$s:dup 1] # hello
+    [$s:dup 0] # ""
+```
 ## `split`
 Splits a string by a given delimiter.
 ### Examples

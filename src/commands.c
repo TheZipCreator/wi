@@ -958,6 +958,36 @@ W_COMMAND(w_cmd_string_set_mut) {
 
 UNMUT(w_cmd_string_set, w_cmd_string_set_mut, string->refcount);
 
+W_COMMAND(w_cmd_string_dup_mut) {
+	ARGS_EQUAL("string:dup", 1);
+	int64_t amt;
+	GET_INT(amt, 0);
+	if(amt < 0) {
+		w_status_err(ctx->status, w_error_new(pos, "Amount of duplications must be positive."));
+		return (w_value_t){};
+	}
+	w_string_t *str = obj->string;
+	if(amt == 0) {
+		str->len = 0;
+		free(str->ptr);
+		str->ptr = NULL;
+		goto ret;
+	}
+	if(amt == 1)
+		goto ret;
+	size_t len = str->len, newlen = len*amt;
+	str->ptr = realloc(str->ptr, newlen);
+	for(size_t i = len; i < newlen; i += len) {
+		memcpy(str->ptr+i, str->ptr, len);
+	}
+	str->len *= amt;
+	ret:
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_string_dup, w_cmd_string_dup_mut, string->refcount);
+
 W_COMMAND(w_cmd_string_split) {
 	ARGS_EQUAL("string:split", 1);
 	w_value_t vby = w_evalt(ctx, this, &args.ptr[0]);

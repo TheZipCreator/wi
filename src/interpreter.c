@@ -482,8 +482,10 @@ w_value_t w_value_index(w_ctx_t *ctx, w_value_t *left, w_value_t *right) {
 						CMD(string_slice_mut);
 					if(w_streqc(str, "slice"))
 						CMD(string_slice);
-					if(w_streqc(str, "split"))
-						CMD(string_split);
+					if(w_streqc(str, "dup!"))
+						CMD(string_dup_mut);
+					if(w_streqc(str, "dup"))
+						CMD(string_dup);
 					char *cstr = w_cstring(str);
 					w_status_err(ctx->status, w_error_new((w_filepos_t){}, "No member '%s' in string.", cstr));
 					free(cstr);
