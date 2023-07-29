@@ -34,8 +34,8 @@ void NAME##_set(NAME##_t *tbl, w_astring_t *str, T value); /* sets a value in a 
 void NAME##_setc(NAME##_t *tbl, char *str, T value); /* same as above, except uses a cstring instead */ \
 T *NAME##_get(NAME##_t *tbl, w_astring_t *str); /* gets a value from a hashmap. returns NULL if it doesn't exist */\
 T *NAME##_gets(NAME##_t *tbl, char *str); /* same as above, except uses a cstring instead */\
-void NAME##_delete(NAME##_t *tbl, w_astring_t *str); /* deletes a value from a hashmap */ \
-void NAME##_deletec(NAME##_t *tbl, char *str); /* same as above, except uses a cstring instead */ \
+void NAME##_del(NAME##_t *tbl, w_astring_t *str); /* deletes a value from a hashmap */ \
+void NAME##_delc(NAME##_t *tbl, char *str); /* same as above, except uses a cstring instead */ \
 NAME##_t NAME##_clone(NAME##_t *tbl, DATA new_data);
 
 // FREE and CLONE are freeing and cloning functions. They are both called with the data and an item.
@@ -100,7 +100,7 @@ T *NAME##_getc(NAME##_t *tbl, char *str) { \
 	w_astring_t a = (w_astring_t){strlen(str), str}; \
 	return NAME##_get(tbl, &a); \
 } \
-void NAME##_delete(NAME##_t *tbl, w_astring_t *str) { \
+void NAME##_del(NAME##_t *tbl, w_astring_t *str) { \
 	size_t hash = w_hash(str)%tbl->capacity; \
 	NAME##_list_t *curr = tbl->ptr[hash], *prev = NULL; \
 	if(curr == NULL) \
@@ -118,9 +118,9 @@ void NAME##_delete(NAME##_t *tbl, w_astring_t *str) { \
 		curr = curr->next;  \
 	} \
 } \
-void NAME##_deletec(NAME##_t *tbl, char *str) { \
+void NAME##_delc(NAME##_t *tbl, char *str) { \
 	w_astring_t a = (w_astring_t){strlen(str), str}; \
-	NAME##_delete(tbl, &a); \
+	NAME##_del(tbl, &a); \
 } \
 static NAME##_list_t *NAME##_list_clone(DATA d, NAME##_list_t *old) { \
 	NAME##_list_t *new = malloc(sizeof(NAME##_list_t)); \

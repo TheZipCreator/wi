@@ -3,3 +3,5 @@
 - Fixed compilation errors that for some reason I didn't get on my computer.
 ## (dev)
 - Fixed `(null):1:1` file position appearing in certain circumstances.
+- Fixed the `let!` command calling itself `set!` sometimes.
+

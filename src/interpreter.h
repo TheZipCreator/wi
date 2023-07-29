@@ -154,6 +154,7 @@ w_ctx_t w_default_ctx(w_status_t *status); /// Creates a context with all standa
 w_value_t *w_ctx_get(w_ctx_t *ctx, w_astring_t *str); /// Gets a variable. Returns NULL if such a variable does not exist.
 void w_ctx_let(w_ctx_t *ctx, w_astring_t *str, w_value_t val); /// Declares a variable
 void w_ctx_set(w_ctx_t *ctx, w_astring_t *str, w_value_t val); /// Sets a variable
+void w_ctx_del(w_ctx_t *ctx, w_astring_t *str); /// Deletes a variable
 w_value_t *w_ctx_getc(w_ctx_t *ctx, char *cstr); /// Same as w_ctx_set, except using a cstring
 void w_ctx_setc(w_ctx_t *ctx, char *cstr, w_value_t val); /// Same as w_ctx_get, except using a cstring.
 void w_ctx_letc(w_ctx_t *ctx, char *cstr, w_value_t val); /// Same as w_ctx_let, except using a cstring.

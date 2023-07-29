@@ -123,6 +123,17 @@ prints
 
 `012346789`
 
+## `del!`
+Deletes a variable
+### Examples
+```
+let! $x 3;
+echoln $x; # 3
+del! $x;
+# uncommenting out this line will cause an error, since $x has been deleted.
+# echoln $x;
+```
+
 ## `do`
 Evaluates its operand.
 ### Examples

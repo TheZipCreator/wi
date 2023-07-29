@@ -172,7 +172,7 @@ TYPE_CMD(string, w_value_tostring);
 
 #define VAR_CMD(NAME, CMDNAME, FN) \
 	W_COMMAND(w_cmd_##NAME) { \
-		ARGS_GTE("set!", 2); \
+		ARGS_GTE(CMDNAME, 2); \
 		if(args.len%2 != 0) { \
 			w_status_err(ctx->status, w_error_new(pos, CMDNAME " argument count must be a multiple of 2.")); \
 			return (w_value_t){}; \
@@ -199,6 +199,21 @@ TYPE_CMD(string, w_value_tostring);
 
 VAR_CMD(set, "set!", w_ctx_set);
 VAR_CMD(let, "let!", w_ctx_let);
+
+#undef VAR_CMD
+
+W_COMMAND(w_cmd_del) {
+	ARGS_GTE("del!", 1);
+	for(size_t i = 0; i < args.len; i++) {
+		w_ast_t *var = &args.ptr[i];
+		if(var->type != W_AST_VAR) {
+			w_status_err(ctx->status, w_error_new(pos, "del! can only delete variables."));
+			return (w_value_t){};
+		}
+		w_ctx_del(ctx, &var->string);
+	}
+	return (w_value_t){.type = W_VALUE_NULL};
+}
 
 W_COMMAND(w_cmd_swap) {
 	ARGS_EQUAL("swap!", 2);
@@ -834,6 +849,28 @@ W_COMMAND(w_cmd_map_set_mut) {
 }
 
 UNMUT(w_cmd_map_set, w_cmd_map_set_mut, map->data);
+
+W_COMMAND(w_cmd_map_del_mut) {
+	ARGS_GTE("map:del", 1);
+	w_map_t *map = obj->map;
+	for(size_t i = 0; i < args.len; i++) {
+		w_value_t v = w_evalt(ctx, this, &args.ptr[i]);
+		if(ctx->status->tag != W_STATUS_OK)
+			return (w_value_t){};
+		if(v.type != W_VALUE_STRING) {
+			w_value_t v2 = w_value_tostring(&v);
+			w_value_release(&v);
+			v = v2;
+		}
+		w_astring_t astr = (w_astring_t){v.string->len, v.string->ptr};
+		w_map_del(map, &astr);
+		w_value_release(&v);
+	}
+	w_value_ref(obj);
+	return *obj;
+}
+
+UNMUT(w_cmd_map_del, w_cmd_map_del_mut, map->data);
 
 W_COMMAND(w_cmd_new_list) {
 	ARGS_EQUAL("new-list", 1);

@@ -19,9 +19,12 @@ W_COMMAND(w_cmd_mul);
 W_COMMAND(w_cmd_div);
 W_COMMAND(w_cmd_mod);
 
+// state operations
+
 W_COMMAND(w_cmd_set); // sets variables
 W_COMMAND(w_cmd_let); // declares variables
 W_COMMAND(w_cmd_swap); // swaps variables
+W_COMMAND(w_cmd_del);
 
 // boolean operations
 
@@ -83,6 +86,8 @@ W_COMMAND(w_cmd_new_list); // makes a list with N entries
 
 W_COMMAND(w_cmd_map_set_mut); // sets a value in a map
 W_COMMAND(w_cmd_map_set);
+W_COMMAND(w_cmd_map_del_mut);
+W_COMMAND(w_cmd_map_del);
 
 // string operations
 W_COMMAND(w_cmd_string_set_mut);

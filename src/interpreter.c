@@ -553,6 +553,10 @@ w_value_t w_value_index(w_ctx_t *ctx, w_value_t *left, w_value_t *right) {
 						CMD(map_set);
 					else if(w_streqc(str, "clone"))
 						CMD(clone);
+					else if(w_streqc(str, "del!"))
+						CMD(map_del_mut);
+					else if(w_streqc(str, "del"))
+						CMD(map_del);
 					w_astring_t astr = (w_astring_t){str->len, str->ptr};
 					w_value_t *val = w_map_get(left->map, &astr);
 					if(val == NULL) {
@@ -670,6 +674,7 @@ w_ctx_t w_default_ctx(w_status_t *status) {
 	w_ctx_letc(&ctx, "set!", CMD(set));
 	w_ctx_letc(&ctx, "let!", CMD(let));
 	w_ctx_letc(&ctx, "swap!", CMD(swap));
+	w_ctx_letc(&ctx, "del!", CMD(del));
 	
 	w_ctx_letc(&ctx, "if", CMD(if));
 	w_ctx_letc(&ctx, "break", CMD(break));
@@ -721,6 +726,10 @@ void w_ctx_let(w_ctx_t *ctx, w_astring_t *str, w_value_t val) {
 	w_var_t var = (w_var_t){ctx->scope, malloc(sizeof(w_value_t))};
 	*var.val = val;
 	w_vartable_set(&ctx->vartable, str, var);
+}
+
+void w_ctx_del(w_ctx_t *ctx, w_astring_t *str) {
+	w_vartable_del(&ctx->vartable, str);
 }
 
 w_value_t *w_ctx_getc(w_ctx_t *ctx, char *cstr) {
