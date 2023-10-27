@@ -188,7 +188,7 @@ double w_parse_float(char *str, size_t len) {
 }
 
 char *w_readline(char *prompt) {
-	printf(prompt);
+	printf("%s", prompt);
 	w_writer_t w = w_writer_new();
 	int c;
 	while(true) {

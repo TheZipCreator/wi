@@ -260,7 +260,7 @@ static void resolve_index(parser_t *p, w_ast_commands_t *cmds) {
 		}
 		if(!found_index)
 			break;
-		cont:
+		cont:;
 	}
 }
 

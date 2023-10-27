@@ -908,7 +908,7 @@ static w_value_t eval(w_ctx_t *ctx, w_ast_t *ast, w_ctx_t *sub_ctx, w_value_t *t
 						switch(sub->status->tag) {
 							case W_STATUS_OK:
 								break;
-							case W_STATUS_RETURN:
+							case W_STATUS_RETURN:;
 								w_value_t ret = *sub->status->ret;
 								w_value_ref(&ret);
 								w_status_ok(sub->status);
